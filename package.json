@@ -27,9 +27,11 @@
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2",
-    "@types/node": "^12.7.4",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.1",
+    "@types/helmet": "^0.0.44",
+    "@types/node": "^12.7.4",
     "@typescript-eslint/eslint-plugin": "^2.1.0",
     "@typescript-eslint/parser": "^2.1.0",
     "eslint": "^6.3.0",
@@ -38,6 +40,7 @@
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
+    "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
     "ts-node-dev": "^1.0.0-pre.42",
     "typescript": "^3.6.2"
