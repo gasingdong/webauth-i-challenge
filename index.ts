@@ -1,39 +1,15 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import bcryptjs from 'bcryptjs';
 import Users from './users/users-model';
+import RestrictedRouter from './restrictedRouter';
 
 const server = express();
 
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
-
-const restricted = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  const { username, password } = req.headers;
-
-  if (username && password) {
-    try {
-      console.log(username);
-      const user = await Users.findBy({ username });
-
-      if (user && bcryptjs.compareSync(password as string, user.password)) {
-        next();
-      } else {
-        res.status(401).json({ error: 'Invalid credentials.' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: 'Unexpected server error.' });
-    }
-  } else {
-    res.status(400).json({ error: 'No credentials provided.' });
-  }
-};
 
 server.get('/', (req, res) => {
   res.send("It's alive!");
@@ -69,14 +45,7 @@ server.post('/api/login', async (req, res) => {
   }
 });
 
-server.get('/api/users', restricted, async (req, res) => {
-  try {
-    const users = await Users.find();
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ error: 'Unexpected server error.' });
-  }
-});
+server.use('/api/restricted', RestrictedRouter);
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`\n** Running on port ${port} **\n`));
