@@ -33,7 +33,12 @@ const sessionConfig = {
 
 server.use(helmet());
 server.use(express.json());
-server.use(cors());
+server.use(
+  cors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+  })
+);
 server.use(session(sessionConfig));
 
 server.get('/', (req, res) => {
@@ -58,6 +63,7 @@ server.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    console.log(username, password);
     const user = await Users.findBy({ username });
 
     if (user && bcryptjs.compareSync(password, user.password)) {
