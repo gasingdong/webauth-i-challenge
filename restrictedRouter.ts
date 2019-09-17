@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction } from 'express';
-import bcryptjs from 'bcryptjs';
 import Users from './users/users-model';
 
 const router = express.Router();
@@ -11,23 +10,12 @@ const restricted = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { username, password } = req.headers;
-
-  if (username && password) {
-    try {
-      console.log(username);
-      const user = await Users.findBy({ username });
-
-      if (user && bcryptjs.compareSync(password as string, user.password)) {
-        next();
-      } else {
-        res.status(401).json({ error: 'Invalid credentials.' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: 'Unexpected server error.' });
-    }
+  if (req.session && req.session.user) {
+    next();
   } else {
-    res.status(400).json({ error: 'No credentials provided.' });
+    res.status(401).json({
+      error: 'You must be logged in before you can access this data.',
+    });
   }
 };
 
