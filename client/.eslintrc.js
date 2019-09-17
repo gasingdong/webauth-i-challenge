@@ -1,11 +1,11 @@
 module.exports = {
   "parser":  "@typescript-eslint/parser",
   "extends": [
+    "plugin:@typescript-eslint/recommended",
     "airbnb-typescript",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/react",
     "prettier/@typescript-eslint",
+    "prettier/react",
 	  "plugin:prettier/recommended",
   ],
   "parserOptions": {
